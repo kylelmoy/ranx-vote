@@ -31,7 +31,11 @@ export default function Home() {
         >
           a simple voting system that uses voters' rankings of candidates to choose a single winner
         </Text>
-        <Button id="arrow-button-2" variant="secondary" arrowIcon>
+        <Button
+          variant="secondary"
+          size="m"
+          href="./create"
+          arrowIcon>
           <ShineFx speed={5} baseOpacity={0.6}>
             Create a ballot
           </ShineFx>
