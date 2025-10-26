@@ -1,23 +1,23 @@
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL = "https://demo.once-ui.com";
+const baseURL = "https://ranx-vote.kylelmoy.com";
 
 // Import and set font for each variant
-import { Geist } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
+import { Nunito } from "next/font/google";
 
-const heading = Geist({
+const heading = Nunito({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
 });
 
-const body = Geist({
+const body = Nunito({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
-const label = Geist({
+const label = Nunito({
   variable: "--font-label",
   subsets: ["latin"],
   display: "swap",
@@ -38,18 +38,17 @@ const fonts = {
 
 // default customization applied to the HTML in the main layout.tsx
 const style = {
-  theme: "system", // dark | light | system
-  neutral: "gray", // sand | gray | slate
-  brand: "blue", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-  accent: "indigo", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-  solid: "contrast", // color | contrast | inverse
-  solidStyle: "flat", // flat | plastic
-  border: "playful", // rounded | playful | conservative
-  surface: "filled", // filled | translucent
-  transition: "all", // all | micro | macro
+  theme: "light",
+  brand: "cyan",
+  accent: "pink",
+  neutral: "gray",
+  border: "rounded",
+  solid: "color",
+  solidStyle: "plastic",
+  surface: "filled",
+  transition: "all",
   scaling: "100", // 90 | 95 | 100 | 105 | 110
-};
-
+}
 const dataStyle = {
   variant: "gradient", // flat | gradient | outline
   mode: "categorical", // categorical | divergent | sequential
@@ -109,13 +108,13 @@ const effects = {
 const meta = {
   home: {
     path: "/",
-    title: "Once UI for Next.js",
+    title: "ranx-vote by kyle moy",
     description:
-      "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
+      "A simple ranked-choice voting platform.",
     image: "/images/og/home.jpg",
-    canonical: "https://once-ui.com",
+    canonical: "https://ranx-vote.kylelmoy.com",
     robots: "index,follow",
-    alternates: [{ href: "https://once-ui.com", hrefLang: "en" }],
+    alternates: [{ href: "https://ranx-vote.kylelmoy.com", hrefLang: "en" }],
   },
   // add more routes and reference them in page.tsx
 };
@@ -123,17 +122,10 @@ const meta = {
 // default schema data
 const schema = {
   logo: "",
-  type: "Organization",
-  name: "Once UI",
+  type: "Person",
+  name: "Kyle Moy",
   description: meta.home.description,
-  email: "lorant@once-ui.com",
-};
-
-// social links
-const social = {
-  twitter: "https://www.twitter.com/_onceui",
-  linkedin: "https://www.linkedin.com/company/once-ui/",
-  discord: "https://discord.com/invite/5EyAQ4eNdS",
+  email: "kyle.l.moy@gmail.com",
 };
 
 export { baseURL, fonts, style, meta, schema, social, effects, dataStyle };

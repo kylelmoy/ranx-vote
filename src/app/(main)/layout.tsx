@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { baseURL, meta, fonts, effects, style, dataStyle } from "@/resources/once-ui.config";
 import { Meta, Schema,  Column, Flex, opacity, SpacingToken, Background} from "@once-ui-system/core";
 import { Providers } from '@/components/Providers';
+import { Footer } from '@/components/Footer';
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -107,7 +108,8 @@ export default function RootLayout({
         />
       </head>
       <Providers>
-        <Column as="body" background="page" fillWidth margin="0" padding="0">
+        <Column as="body" background="page" fillWidth margin="0" padding="0" 
+					style={{ minHeight: "100vh" }}>
           <Background
             position="absolute"
             mask={{
@@ -149,7 +151,12 @@ export default function RootLayout({
               color: effects.lines.color,
             }}
           />
-          {children}
+					<Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+						<Flex horizontal="center" fillWidth minHeight="0">
+						{children}
+						</Flex>
+					</Flex>
+					<Footer />
         </Column>
       </Providers>
     </Flex>
