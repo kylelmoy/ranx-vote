@@ -5,6 +5,8 @@ import {
   Text,
   Column,
   TypeFx,
+  Button,
+  ShineFx,
 } from "@once-ui-system/core";
 
 export default function Home() {
@@ -12,14 +14,14 @@ export default function Home() {
     <Column fillWidth center padding="l">
       <Column maxWidth="s" horizontal="center" gap="l" align="center">
         <Heading variant="display-strong-xl" marginTop="24">
-            ran
-        <TypeFx
-          words={["ked choice vote","x-vote"]}
-          speed={80}
-          delay={500}
-          hold={5000}
-          trigger="instant"
-        />
+          ran
+          <TypeFx
+            words={["ked choice vote", "x-vote"]}
+            speed={80}
+            delay={500}
+            hold={5000}
+            trigger="instant"
+          />
         </Heading>
         <Text
           variant="heading-default-xl"
@@ -29,6 +31,11 @@ export default function Home() {
         >
           a simple voting system that uses voters' rankings of candidates to choose a single winner
         </Text>
+        <Button id="arrow-button-2" variant="secondary" arrowIcon>
+          <ShineFx speed={5} baseOpacity={0.6}>
+            Create a ballot
+          </ShineFx>
+        </Button>
       </Column>
     </Column>
   );

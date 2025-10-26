@@ -29,7 +29,7 @@ export const Footer = () => {
 							icon="github"
 							tooltip="kylelmoy/ranx-vote on GitHub"
 							size="s"
-							variant="primary"
+							variant="ghost"
 						/>
 					<IconButton
 							key="LinkedIn"
