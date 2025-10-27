@@ -13,12 +13,12 @@ import {
 export default function Home() {
   return (
     <Column fillWidth center padding="l">
-      <RevealFx>
+      <RevealFx center>
         <Column maxWidth="s" horizontal="center" gap="l" align="center">
           <Heading variant="display-strong-xl" marginTop="24">
             ran
             <TypeFx
-              words={["ked choice vote", "x-vote"]}
+              words={["x-vote", "ked choice vote"]}
               speed={80}
               delay={500}
               hold={5000}
@@ -29,7 +29,7 @@ export default function Home() {
         </Column>
       </RevealFx>
 
-      <RevealFx delay={0.2}>
+      <RevealFx delay={0.2} center>
         <Column maxWidth="s" horizontal="center" gap="l" align="center">
           <Text
             variant="heading-default-xl"
@@ -42,7 +42,7 @@ export default function Home() {
         </Column>
       </RevealFx>
 
-      <RevealFx delay={0.8} translateY={1}>
+      <RevealFx delay={0.8} translateY={1} center>
         <Column maxWidth="s" horizontal="center" gap="l" align="center">
           <Button
             variant="secondary"

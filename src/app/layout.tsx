@@ -5,7 +5,7 @@ import '@/resources/custom.css'
 import classNames from "classnames";
 
 import { baseURL, meta, fonts, effects, style, dataStyle } from "@/resources/once-ui.config";
-import { Meta, Schema,  Column, Flex, opacity, SpacingToken, Background} from "@once-ui-system/core";
+import { Meta, Schema, Column, Flex, opacity, SpacingToken, Background, Particle } from "@once-ui-system/core";
 import { Providers } from '@/components/Providers';
 import { Footer } from '@/components/Footer';
 
@@ -58,18 +58,18 @@ export default function RootLayout({
                   
                   // Set defaults from config
                   const config = ${JSON.stringify({
-                    theme: style.theme,
-                    brand: style.brand,
-                    accent: style.accent,
-                    neutral: style.neutral,
-                    solid: style.solid,
-                    'solid-style': style.solidStyle,
-                    border: style.border,
-                    surface: style.surface,
-                    transition: style.transition,
-                    scaling: style.scaling,
-                    'viz-style': dataStyle.variant,
-                  })};
+              theme: style.theme,
+              brand: style.brand,
+              accent: style.accent,
+              neutral: style.neutral,
+              solid: style.solid,
+              'solid-style': style.solidStyle,
+              border: style.border,
+              surface: style.surface,
+              transition: style.transition,
+              scaling: style.scaling,
+              'viz-style': dataStyle.variant,
+            })};
                   
                   // Apply default values
                   Object.entries(config).forEach(([key, value]) => {
@@ -108,8 +108,8 @@ export default function RootLayout({
         />
       </head>
       <Providers>
-        <Column as="body" background="page" fillWidth margin="0" padding="0" 
-					style={{ minHeight: "100vh" }}>
+        <Column as="body" background="page" fillWidth margin="0" padding="0"
+          style={{ minHeight: "100vh" }}>
           <Background
             position="absolute"
             mask={{
@@ -151,12 +151,13 @@ export default function RootLayout({
               color: effects.lines.color,
             }}
           />
-					<Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-						<Flex horizontal="center" fillWidth minHeight="0">
-						{children}
-						</Flex>
-					</Flex>
-					<Footer />
+          <Particle style={{ transform: "scale(1.1)" }} opacity={30} size="2" position="absolute" top="0" left="0" fill interactive speed={4} density={100} intensity={50} />
+          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+            <Flex horizontal="center" fillWidth minHeight="0">
+              {children}
+            </Flex>
+          </Flex>
+          <Footer />
         </Column>
       </Providers>
     </Flex>

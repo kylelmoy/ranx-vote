@@ -12,7 +12,8 @@ import {
   IconButton,
   DropdownWrapper,
   Option,
-  Icon,
+  Button,
+  ShineFx,
 } from "@once-ui-system/core";
 import { useState } from "react";
 
@@ -33,11 +34,17 @@ export default function Home() {
 
   return (
     <Column fillWidth padding="l">
-      <RevealFx>
-        <Column fillWidth horizontal="center" gap="l" align="center">
-          <Heading variant="display-strong-xl" marginTop="24">
-            Create
-          </Heading>
+      <RevealFx horizontal="center">
+        <Column fillWidth horizontal="center" gap="l" align="center" paddingBottom="l" maxWidth={24}>
+
+          <Row maxWidth={24} horizontal="center">
+            <Heading variant="display-strong-xl" marginTop="24">
+              create
+            </Heading>
+
+            <Button prefixIcon="chevronLeft" variant="secondary" size="s" style={{ position: "absolute", left: 0, bottom: 0 }} href="/">
+              home
+            </Button></Row>
           <Row maxWidth={24}>
             <Column
               overflow="hidden"
@@ -63,7 +70,7 @@ export default function Home() {
                   display: true,
                   opacity: 90,
                   x: 50,
-                  y: 0,
+                  y: 100,
                   width: 50,
                   height: 50,
                   tilt: 0,
@@ -105,7 +112,7 @@ export default function Home() {
               </Column>
             </Column>
           </Row>
-          <Row maxWidth={24}>
+          <Row maxWidth={24} >
             <Column
               overflow="hidden"
               fillWidth
@@ -157,7 +164,6 @@ export default function Home() {
                   return (
                     <Column key={index}
                       fillWidth
-                      gap="4"
                       padding="s"
                       radius="l"
                       horizontal="start"
@@ -166,7 +172,7 @@ export default function Home() {
                       border="neutral-alpha-weak"
                       style={{ textAlign: "left" }}
                     >
-                      <Row fillWidth>
+                      <Row fillWidth marginBottom="s">
                         <Column>
                           <Text wrap="nowrap" variant="label-default-m">
                             {"Option #" + (index + 1)}
@@ -247,6 +253,9 @@ export default function Home() {
                             id={"option-url-" + index}
                             name="Description"
                             label="Description"
+                            radius={(options[index].hasImage
+                              || options[index].hasUrl
+                            ) ? "none" : "bottom"}
                           />
                         </Row>
                       )}
@@ -256,6 +265,8 @@ export default function Home() {
                             id={"option-url-" + index}
                             name="Image"
                             label="Image URL"
+                            radius={(options[index].hasUrl
+                            ) ? "none" : "bottom"}
                           />
                         </Row>
                       )}
@@ -265,6 +276,7 @@ export default function Home() {
                             id={"option-url-" + index}
                             name="Link"
                             label="External Link"
+                            radius="bottom"
                           />
                         </Row>
                       )}
@@ -287,6 +299,11 @@ export default function Home() {
                 </Row>
               </Column>
             </Column>
+          </Row>
+          <Row maxWidth={24}>
+            <Button id="submit-button" variant="primary" fillWidth arrowIcon>
+              <ShineFx baseOpacity={0.6}>Create this ballot</ShineFx>
+            </Button>
           </Row>
         </Column>
       </RevealFx>
