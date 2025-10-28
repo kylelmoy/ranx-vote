@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <Column fillWidth padding="l">
       <RevealFx horizontal="center">
-        <Column fillWidth horizontal="center" gap="l" align="center" paddingBottom="l" maxWidth={24}>
+        <Column fillWidth horizontal="center" gap="l" align="center" paddingBottom="l">
 
           <Row maxWidth={24} horizontal="center">
             <Heading variant="display-strong-xl" marginTop="24">
@@ -160,7 +160,7 @@ export default function Home() {
                 </Text>
               </Column>
               <Column fillWidth horizontal="start" gap="8">
-                {options && options.map((option, index) => {
+                {options?.map((option, index) => {
                   return (
                     <Column key={index}
                       fillWidth
@@ -231,7 +231,7 @@ export default function Home() {
 
                       <Row fillWidth style={{ alignItems: "center" }}>
                         <Input
-                          id={"option-" + index}
+                          id={`option-name-${index}`}
                           name="Name"
                           label="Name"
                           value={option.name}
@@ -250,7 +250,7 @@ export default function Home() {
                       {options[index].hasDecription && (
                         <Row fillWidth>
                           <Input
-                            id={"option-url-" + index}
+                            id={`option-desc-${index}`}
                             name="Description"
                             label="Description"
                             radius={(options[index].hasImage
@@ -262,7 +262,7 @@ export default function Home() {
                       {options[index].hasImage && (
                         <Row fillWidth>
                           <Input
-                            id={"option-url-" + index}
+                            id={`option-img-${index}`}
                             name="Image"
                             label="Image URL"
                             radius={(options[index].hasUrl
@@ -273,7 +273,7 @@ export default function Home() {
                       {options[index].hasUrl && (
                         <Row fillWidth>
                           <Input
-                            id={"option-url-" + index}
+                            id={`option-url-${index}`}
                             name="Link"
                             label="External Link"
                             radius="bottom"
