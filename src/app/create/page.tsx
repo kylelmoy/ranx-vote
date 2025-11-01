@@ -1,5 +1,6 @@
 "use client";
 
+import type { Ballot, BallotOption } from "@/lib/dbTypes";
 import {
   Heading,
   Text,
@@ -15,14 +16,14 @@ import {
   Button,
   ShineFx,
 } from "@once-ui-system/core";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-type BallotOption = {
-  name?: string,
-  description?: string,
-  image?: string,
-  url?: string,
+type BallotForm = {
+  name: string,
+  description: string;
+};
 
+type BallotOptionWithProps = BallotOption & {
   dropdownOpen?: boolean,
   hasDecription?: boolean,
   hasImage?: boolean,
@@ -30,8 +31,52 @@ type BallotOption = {
 }
 
 export default function Home() {
-  const [options, setOptions] = useState<BallotOption[]>([{ name: "" }, { name: "" }, { name: "" }]);
+  const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "" });
+  const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "" } }));
+  const handleFormChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.currentTarget;
+    setBallotForm(prev => {
+      return {
+        ...prev,
+        [name]: value
+      }
+    });
+  }, []);
 
+  const handleOptionChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = event.currentTarget;
+      const [idxStr, keyStr] = name.split(".");
+      const index = Number(idxStr);
+      const key = keyStr as keyof BallotOption;
+
+      setOptions(prev => {
+        const next = [...prev] as BallotOptionWithProps[];
+        const option = { ...next[index] };
+        option[key] = value;
+        next[index] = option;
+        return next;
+      });
+    },
+    []
+  );
+  const handleSubmit = useCallback(async () => {
+
+
+    const ballot: Ballot = {
+      ...ballotForm,
+      options: options.map((option) => {
+        return {
+          name: option.name,
+          description: option.description,
+          image: option.image,
+          url: option.url,
+        };
+      }),
+    };
+
+    console.log(ballot);
+  }, [ballotForm, options]);
   return (
     <Column fillWidth padding="l">
       <RevealFx horizontal="center">
@@ -96,8 +141,10 @@ export default function Home() {
                 <Row fillWidth>
                   <Input
                     id="ballot-name"
-                    name="ballotName"
+                    name="name"
                     label="Name"
+                    value={ballotForm.name}
+                    onChange={handleFormChange}
                     required
                   />
                 </Row>
@@ -105,6 +152,9 @@ export default function Home() {
                 <Row fillWidth>
                   <Textarea
                     id="ballot-description"
+                    name="description"
+                    value={ballotForm.description}
+                    onChange={handleFormChange}
                     label="Describe what you're voting on"
                     lines={3}
                   />
@@ -231,14 +281,11 @@ export default function Home() {
 
                       <Row fillWidth style={{ alignItems: "center" }}>
                         <Input
-                          id={`option-name-${index}`}
-                          name="Name"
+                          id={`${index}.name`}
+                          name={`${index}.name`}
                           label="Name"
                           value={option.name}
-                          onChange={(e) => {
-                            options[index].name = e.target.value;
-                            setOptions([...options]);
-                          }}
+                          onChange={handleOptionChange}
                           radius={(options[index].hasDecription
                             || options[index].hasImage
                             || options[index].hasUrl
@@ -250,9 +297,11 @@ export default function Home() {
                       {options[index].hasDecription && (
                         <Row fillWidth>
                           <Input
-                            id={`option-desc-${index}`}
-                            name="Description"
+                            id={`${index}.description`}
+                            name={`${index}.description`}
                             label="Description"
+                            value={option.description}
+                            onChange={handleOptionChange}
                             radius={(options[index].hasImage
                               || options[index].hasUrl
                             ) ? "none" : "bottom"}
@@ -262,9 +311,11 @@ export default function Home() {
                       {options[index].hasImage && (
                         <Row fillWidth>
                           <Input
-                            id={`option-img-${index}`}
-                            name="Image"
+                            id={`${index}.image`}
+                            name={`${index}.image`}
                             label="Image URL"
+                            value={option.image}
+                            onChange={handleOptionChange}
                             radius={(options[index].hasUrl
                             ) ? "none" : "bottom"}
                           />
@@ -273,9 +324,11 @@ export default function Home() {
                       {options[index].hasUrl && (
                         <Row fillWidth>
                           <Input
-                            id={`option-url-${index}`}
-                            name="Link"
+                            id={`${index}.url`}
+                            name={`${index}.url`}
                             label="External Link"
+                            value={option.url}
+                            onChange={handleOptionChange}
                             radius="bottom"
                           />
                         </Row>
@@ -293,7 +346,7 @@ export default function Home() {
                     setOptions([...newOptions]);
                   }} />
                   <IconButton icon="plus" size="l" onClick={() => {
-                    options.push({});
+                    options.push({ name: "", description: "", image: "", url: "" });
                     setOptions([...options]);
                   }} />
                 </Row>
@@ -301,7 +354,7 @@ export default function Home() {
             </Column>
           </Row>
           <Row maxWidth={24}>
-            <Button id="submit-button" variant="primary" fillWidth arrowIcon>
+            <Button id="submit-button" variant="primary" fillWidth arrowIcon onClick={handleSubmit}>
               <ShineFx baseOpacity={0.6}>Create this ballot</ShineFx>
             </Button>
           </Row>
