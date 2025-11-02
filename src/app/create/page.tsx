@@ -1,5 +1,6 @@
 "use client";
 
+import { createBallot } from "@/lib/dbAccess";
 import type { Ballot, BallotOption } from "@/lib/dbTypes";
 import {
   Heading,
@@ -15,12 +16,14 @@ import {
   Option,
   Button,
   ShineFx,
+  Icon,
 } from "@once-ui-system/core";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 type BallotForm = {
   name: string,
   description: string;
+  error: boolean,
 };
 
 type BallotOptionWithProps = BallotOption & {
@@ -28,18 +31,23 @@ type BallotOptionWithProps = BallotOption & {
   hasDecription?: boolean,
   hasImage?: boolean,
   hasUrl?: boolean,
+  error: boolean
 }
 
 export default function Home() {
-  const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "" });
-  const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "" } }));
+  const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "", error: false });
+  const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "", error: false } }));
+  const nameRef = useRef<HTMLInputElement>(null);
+
   const handleFormChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
     setBallotForm(prev => {
-      return {
+      const newFormValues = {
         ...prev,
         [name]: value
       }
+      newFormValues.error = !newFormValues.name;
+      return newFormValues;
     });
   }, []);
 
@@ -54,6 +62,7 @@ export default function Home() {
         const next = [...prev] as BallotOptionWithProps[];
         const option = { ...next[index] };
         option[key] = value;
+        option.error = !option.name;
         next[index] = option;
         return next;
       });
@@ -61,11 +70,13 @@ export default function Home() {
     []
   );
   const handleSubmit = useCallback(async () => {
-
+    if (!validate()) {
+      return;
+    }
 
     const ballot: Ballot = {
       ...ballotForm,
-      options: options.map((option) => {
+      options: options.filter((option) => option.name).map((option) => {
         return {
           name: option.name,
           description: option.description,
@@ -76,7 +87,35 @@ export default function Home() {
     };
 
     console.log(ballot);
+    createBallot(ballot);
+
   }, [ballotForm, options]);
+
+  const validate = () => {
+    if (!ballotForm.name) {
+      setBallotForm(prev => {
+        return {
+          ...prev,
+          error: true
+        }
+      });
+      nameRef.current?.focus();
+      return false;
+    };
+
+    let hasError = false;
+    for (let i = 0; i < options.length; i++) {
+      if (!options[i].name) {
+        options[i].error = true;
+        hasError = true;
+      }
+    }
+    if (hasError) {
+      setOptions([...options]);
+    }
+    console.log("Validation:" + hasError);
+    return !hasError;
+  };
   return (
     <Column fillWidth padding="l">
       <RevealFx horizontal="center">
@@ -143,9 +182,14 @@ export default function Home() {
                     id="ballot-name"
                     name="name"
                     label="Name"
+                    ref={nameRef}
                     value={ballotForm.name}
                     onChange={handleFormChange}
-                    required
+                    errorMessage={ballotForm.error ? (
+                      <Row vertical="center" gap="8">
+                        <Icon name="danger" size="xs" />
+                        Please enter a name for your ballot.
+                      </Row>) : undefined}
                   />
                 </Row>
 
@@ -279,6 +323,12 @@ export default function Home() {
                         </Column>
                       </Row>
 
+                      {options[index].error && (
+                        <Row vertical="center" gap="8" style={{ color: "red" }} marginBottom="xs">
+                          <Icon name="danger" size="xs" />
+                          Please enter a name for this option.
+                        </Row>)
+                      }
                       <Row fillWidth style={{ alignItems: "center" }}>
                         <Input
                           id={`${index}.name`}
@@ -290,7 +340,6 @@ export default function Home() {
                             || options[index].hasImage
                             || options[index].hasUrl
                           ) ? "top" : undefined}
-                          required
                         />
                       </Row>
 
@@ -346,7 +395,7 @@ export default function Home() {
                     setOptions([...newOptions]);
                   }} />
                   <IconButton icon="plus" size="l" onClick={() => {
-                    options.push({ name: "", description: "", image: "", url: "" });
+                    options.push({ name: "", description: "", image: "", url: "", error: false });
                     setOptions([...options]);
                   }} />
                 </Row>
