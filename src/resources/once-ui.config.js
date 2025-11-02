@@ -116,6 +116,16 @@ const meta = {
     robots: "index,follow",
     alternates: [{ href: "https://ranx-vote.kylelmoy.com", hrefLang: "en" }],
   },
+  vote: {
+    path: "/",
+    title: "ranx-vote by kyle moy",
+    description:
+      "A simple ranked-choice voting platform.",
+    image: "/images/og/home.jpg",
+    canonical: "https://ranx-vote.kylelmoy.com",
+    robots: "index,follow",
+    alternates: [{ href: "https://ranx-vote.kylelmoy.com", hrefLang: "en" }],
+  },
   // add more routes and reference them in page.tsx
 };
 

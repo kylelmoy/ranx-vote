@@ -1,16 +1,15 @@
 "use client";
-import { saveVote } from "@/lib/dbAccess";
-import type { Ballot, BallotOption } from "@/lib/dbTypes";
+import { saveResponse } from "@/lib/dbAccess";
+import type { BallotOption } from "@/lib/dbTypes";
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Box, Grid } from "@mui/material";
 import { Button, Card, Column, Input, Media, Row, Text, Option, Flex, ShineFx, IconButton } from "@once-ui-system/core";
 
 interface BallotListProps {
 	ballotId: string;
 	initialOptions: BallotOption[];
 }
-export const RankingList: React.FC<BallotListProps> = ({ initialOptions, ballotId }) => {
+export const ResponseForm: React.FC<BallotListProps> = ({ initialOptions, ballotId }) => {
 	const [ballotOptions, setBallotOptions] = useState(initialOptions);
 	const [name, setName] = useState("");
 
@@ -38,7 +37,7 @@ export const RankingList: React.FC<BallotListProps> = ({ initialOptions, ballotI
 			}
 		}
 
-		saveVote(ballotId, name || "Anonymous", vote);
+		saveResponse(ballotId, name || "Anonymous", vote);
 	};
 	return (
 		<Column style={{ maxWidth: "400px" }} gap="16" horizontal="center" align="center">

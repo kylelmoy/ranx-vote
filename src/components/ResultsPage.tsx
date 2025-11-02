@@ -1,7 +1,7 @@
 "use client";
-import { RankingList } from "@/components/rankingList";
+import { ResponseForm } from "@/components/ResponseForm";
 import { getBallot } from "@/lib/dbAccess";
-import type { Ballot, BallotOption } from "@/lib/dbTypes";
+import type { Ballot, BallotOption, VoteResponse } from "@/lib/dbTypes";
 import {
   Heading,
   Text,
@@ -22,20 +22,18 @@ import {
   HoloFx,
   Particle,
 } from "@once-ui-system/core";
+import { get } from "http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface BallotProps {
   ballotId?: string;
 };
 
-export default function VotePage({ ballotId }: BallotProps) {
+export default function ResultsPage({ ballotId }: BallotProps) {
 
+  const [loading, setLoading] = useState(true);
   const [ballot, setBallot] = useState<Ballot | null>(null);
-
-  const handleSubmit = useCallback(() => {
-
-  }, []);
-
+  const [responses, setResponses] = useState<VoteResponse[] | null>(null);
 
   useEffect(() => {
     if (!ballotId) {
@@ -43,11 +41,18 @@ export default function VotePage({ ballotId }: BallotProps) {
     }
     getBallot(ballotId).then((ballot) => {
       setBallot(ballot);
+      setLoading(false);
       console.log(ballot);
     });
+
+    getResponses(ballotId).then((responses) => {
+      setResponses(responses);
+      setLoading(false);
+      console.log(responses);
+    }
   }, [ballotId]);
 
-  if (!ballot) {
+  if (loading) {
     return (
       <Column>
         <Skeleton shape="line" width="l" delay="1" />
@@ -56,6 +61,17 @@ export default function VotePage({ ballotId }: BallotProps) {
       </Column>
     );
   }
+
+  if (!ballot) {
+    return (
+      <Column>
+        <Text variant="body-strong-m">
+          Ballot {ballotId} not found.
+        </Text>
+      </Column>
+    );
+  }
+
   return (
     <Column
       overflow="hidden"
@@ -64,7 +80,7 @@ export default function VotePage({ ballotId }: BallotProps) {
       radius="l"
       align="center"
       background="surface"
-      border="neutral-alpha-weak"
+      border="neutral-alpha-medium"
       style={{ textAlign: "left" }}
     >
       <Particle opacity={70} position="absolute" top="0" left="0" fill interactive speed={4} size="2" density={50} pointerEvents="none" />
@@ -108,7 +124,6 @@ export default function VotePage({ ballotId }: BallotProps) {
           {ballot.description}
         </Text>
       </Column>
-      <RankingList ballotId={ballot.ballotId || ""} initialOptions={ballot.options} />
     </Column>
   );
 }

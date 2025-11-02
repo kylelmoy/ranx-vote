@@ -1,3 +1,4 @@
+import ResultsPage from "@/components/ResultsPage";
 import {
   Heading,
   Column,
@@ -5,9 +6,8 @@ import {
   RevealFx,
   Button,
 } from "@once-ui-system/core";
-import ResponsePage from "../../../components/ResponsePage";
 
-export default async function Vote({
+export default async function Result({
   params,
 }: {
   params: Promise<{ slug: string | string[] }>;
@@ -22,7 +22,7 @@ export default async function Vote({
 
         <Row maxWidth={24} horizontal="center">
           <Heading variant="display-strong-xl" marginTop="24">
-            vote
+            results
           </Heading>
 
           <Button prefixIcon="chevronLeft" variant="secondary" size="s" style={{ position: "absolute", left: 0, bottom: 0 }} href="/">
@@ -30,7 +30,7 @@ export default async function Vote({
           </Button>
         </Row>
         <Row maxWidth={24}>
-          <ResponsePage ballotId={slugPath} />
+          <ResultsPage ballotId={slugPath} />
         </Row>
       </Column>
     </Column>

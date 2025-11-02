@@ -1,7 +1,7 @@
 'use server';
 import { generateCode } from "@/utils";
 import dbClient from "./dbClient";
-import type { Ballot, Vote } from "@/lib/dbTypes";
+import type { Ballot, VoteResponse } from "@/lib/dbTypes";
 import { redirect } from 'next/navigation';
 
 const MONGODB_DB = process.env.MONGODB_DB || "";
@@ -58,33 +58,31 @@ export async function getBallot(ballotId: string): Promise<Ballot | null> {
 }
 
 
-export async function saveVote(ballotId: string, name: string, choices: number[]) {
+export async function saveResponse(ballotId: string, name: string, choices: number[]) {
 	const client = await dbClient;
 	const db = client?.db(MONGODB_DB);
 
-	const result = await db?.collection("votes").insertOne({
+	const result = await db?.collection("responses").insertOne({
 		ballotId: ballotId,
 		name: name,
 		choices: choices,
 		timestamp: Date.now()
 	});
 
-	redirect(`/results/${ballotId}`);
+	redirect(`/result/${ballotId}`);
 	return result?.acknowledged;
 }
 
-export async function getVotes(ballotId: string) {
+export async function getResponses(ballotId: string) {
 	const client = await dbClient;
 	const db = client?.db(MONGODB_DB);
 
-	const result = await db?.collection("votes").find({
+	const result = await db?.collection("responses").find({
 		ballotId: ballotId,
 	}).toArray();
 
-	const votes: Vote[] | undefined = result?.map((document) => {
+	const votes: VoteResponse[] | undefined = result?.map((document) => {
 		return {
-			_id: document._id.toString(),
-			ballotId: document.ballotId,
 			name: document.name,
 			choices: document.choices,
 			timestamp: document.timestamp

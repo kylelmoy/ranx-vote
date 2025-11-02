@@ -16,9 +16,9 @@ export type BallotOption = {
     url?: string,
 }
 
-export type Vote = {
-    _id: string;
-    ballotId: string;
+export type VoteResponse = {
+    _id?: string;
+    ballotId?: string;
     name: string;
     choices: string[];
     timestamp: number;
