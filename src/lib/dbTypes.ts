@@ -1,5 +1,6 @@
 export type Ballot = {
     _id?: string;
+    ballotId?: string;
     name: string;
     description: string;
     timestamp?: number;
@@ -8,6 +9,7 @@ export type Ballot = {
 
 export type BallotOption = {
     _id?: string;
+    optionId?: number;
     name?: string,
     description?: string,
     image?: string,

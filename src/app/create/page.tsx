@@ -34,7 +34,7 @@ type BallotOptionWithProps = BallotOption & {
   error: boolean
 }
 
-export default function Home() {
+export default function Create() {
   const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "", error: false });
   const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "", error: false } }));
   const nameRef = useRef<HTMLInputElement>(null);
@@ -85,10 +85,7 @@ export default function Home() {
         };
       }),
     };
-
-    console.log(ballot);
     createBallot(ballot);
-
   }, [ballotForm, options]);
 
   const validate = () => {
@@ -113,7 +110,6 @@ export default function Home() {
     if (hasError) {
       setOptions([...options]);
     }
-    console.log("Validation:" + hasError);
     return !hasError;
   };
   return (

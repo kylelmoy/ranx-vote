@@ -151,7 +151,6 @@ export default function RootLayout({
               color: effects.lines.color,
             }}
           />
-          <Particle style={{ transform: "scale(1.1)" }} opacity={30} size="2" position="absolute" top="0" left="0" fill interactive speed={4} density={100} intensity={50} />
           <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
             <Flex horizontal="center" fillWidth minHeight="0">
               {children}

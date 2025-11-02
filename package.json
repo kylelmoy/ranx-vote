@@ -11,6 +11,7 @@
     "biome-write": "npx @biomejs/biome format --write ."
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@once-ui-system/core": "^1.4.12",
     "classnames": "^2.5.1",
     "mongodb": "^6.20.0",

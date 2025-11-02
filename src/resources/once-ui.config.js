@@ -38,12 +38,12 @@ const fonts = {
 
 // default customization applied to the HTML in the main layout.tsx
 const style = {
-  theme: "light",
+  theme: "dark",
   brand: "violet",
-  accent: "pink",
+  accent: "magenta",
   neutral: "gray",
   border: "playful",
-  solid: "color",
+  solid: "contrast",
   solidStyle: "flat",
   surface: "filled",
   transition: "all",
