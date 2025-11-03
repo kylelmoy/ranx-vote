@@ -1,7 +1,8 @@
 "use client";
 import { ResponseForm } from "@/components/ResponseForm";
-import { getBallot } from "@/lib/dbAccess";
-import type { Ballot, BallotOption, VoteResponse } from "@/lib/dbTypes";
+import { getBallot, getResponses } from "@/lib/dbAccess";
+import type { Ballot, BallotOption, ResponseQueryResult } from "@/lib/dbTypes";
+import { instantRunoff, InstantRunoffResult } from "@/utils/ranked-choice-vote";
 import {
   Heading,
   Text,
@@ -21,8 +22,8 @@ import {
   Line,
   HoloFx,
   Particle,
+  Media,
 } from "@once-ui-system/core";
-import { get } from "http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface BallotProps {
@@ -30,26 +31,23 @@ interface BallotProps {
 };
 
 export default function ResultsPage({ ballotId }: BallotProps) {
-
   const [loading, setLoading] = useState(true);
-  const [ballot, setBallot] = useState<Ballot | null>(null);
-  const [responses, setResponses] = useState<VoteResponse[] | null>(null);
+  const [data, setData] = useState<ResponseQueryResult | null>(null);
+  const [results, setResults] = useState<InstantRunoffResult | null>(null);
 
   useEffect(() => {
     if (!ballotId) {
       return;
     }
-    getBallot(ballotId).then((ballot) => {
-      setBallot(ballot);
+    getResponses(ballotId).then((data) => {
+      setData(data);
       setLoading(false);
-      console.log(ballot);
-    });
+      console.log(data);
+      document.title = `ranx-vote | results | ${data.ballot?.name || ''}`;
 
-    getResponses(ballotId).then((responses) => {
-      setResponses(responses);
-      setLoading(false);
-      console.log(responses);
-    }
+      const results = instantRunoff(data.responses.map(r => r.choices));
+      setResults(results);
+    });
   }, [ballotId]);
 
   if (loading) {
@@ -62,7 +60,7 @@ export default function ResultsPage({ ballotId }: BallotProps) {
     );
   }
 
-  if (!ballot) {
+  if (!data?.ballot) {
     return (
       <Column>
         <Text variant="body-strong-m">
@@ -72,57 +70,128 @@ export default function ResultsPage({ ballotId }: BallotProps) {
     );
   }
 
+  const ballot = data.ballot as Ballot;
+  const winner = ballot.options.find(o => o.optionId === results?.winner);
+  if (!data?.responses || data.responses.length === 0) {
+    return (
+      <Column>
+        <Text variant="body-strong-m">
+          No responses yet!
+        </Text>
+      </Column>
+    );
+  }
+
   return (
-    <Column
-      overflow="hidden"
-      fillWidth
-      padding="m"
-      radius="l"
-      align="center"
-      background="surface"
-      border="neutral-alpha-medium"
-      style={{ textAlign: "left" }}
-    >
-      <Particle opacity={70} position="absolute" top="0" left="0" fill interactive speed={4} size="2" density={50} pointerEvents="none" />
-      <HoloFx
-        fill
-        top="0"
-        left="0"
-        position="absolute"
-        texture={{
-          opacity: 0,
-        }}>
-        <Background
-          position="absolute"
+    <Column gap="l" fillWidth>
+      <Column
+        overflow="hidden"
+        fillWidth
+        padding="m"
+        radius="l"
+        align="center"
+        background="surface"
+        border="neutral-alpha-medium"
+        style={{ textAlign: "left" }}
+      >
+        <Particle opacity={70} position="absolute" top="0" left="0" fill interactive speed={4} size="2" density={50} pointerEvents="none" />
+        <HoloFx
+          fill
           top="0"
           left="0"
-          gradient={{
-            display: true,
-            x: 0,
-            y: 125,
-            colorStart: "accent-solid-strong",
-            colorEnd: "static-transparent",
-          }}
-        />
-        <Background
-          gradient={{
-            display: true,
-            x: 125,
-            y: 100,
-            width: 150,
-            height: 150,
-            colorStart: "brand-background-strong",
-            colorEnd: "static-transparent",
-          }}
-        />
-      </HoloFx>
-      <Column marginBottom="l" padding="m">
+          position="absolute"
+          texture={{
+            opacity: 0,
+          }}>
+          <Background
+            position="absolute"
+            top="0"
+            left="0"
+            gradient={{
+              display: true,
+              x: 0,
+              y: 125,
+              colorStart: "accent-solid-strong",
+              colorEnd: "static-transparent",
+            }}
+          />
+          <Background
+            gradient={{
+              display: true,
+              x: 125,
+              y: 100,
+              width: 150,
+              height: 150,
+              colorStart: "brand-background-strong",
+              colorEnd: "static-transparent",
+            }}
+          />
+        </HoloFx>
+        <Column>
+          <Heading variant="heading-strong-m">
+            {ballot.name}
+          </Heading>
+          <Text variant="body-default-m">
+            {ballot.description}
+          </Text>
+          <Row center fillWidth>
+          </Row>
+          <Row center fillWidth>
+
+            {winner?.image &&
+              <Media
+                border="neutral-alpha-weak"
+                sizes="400px"
+                fillWidth
+                aspectRatio="4 / 3"
+                radius="l"
+                src={winner.image}
+                marginTop="m"
+                marginBottom="m"
+              />
+            }
+          </Row>
+          <Row center fillWidth>
+            <Text variant="heading-strong-l">
+              {winner?.name || 'No winner yet'}
+            </Text>
+          </Row>
+
+          <Row center fillWidth>
+            <Text variant="label-default-m">
+              Winner (so far)
+            </Text>
+          </Row>
+        </Column>
+      </Column>
+
+      <Column gap="m" fillWidth>
         <Heading variant="heading-strong-m">
-          {ballot?.name}
+          Results Breakdown
         </Heading>
-        <Text>
-          {ballot.description}
-        </Text>
+        {results?.rounds.map((round, index) => (
+          <Column key={index}>
+            <Heading variant="heading-strong-s" marginBottom="m">
+              Round {index + 1}
+            </Heading>
+            <Column gap="s" fillWidth>
+              {Array.from(round.counts.entries()).map(([candidateId, count]) => {
+                const candidateOption = ballot.options.find(o => o.optionId === candidateId);
+                const isEliminated = round.eliminated.includes(candidateId);
+                return (
+                  <Row key={candidateId} align="center" gap="m" fillWidth>
+                    <Text variant={isEliminated ? "label-default-s" : "body-default-m"} style={{ textDecoration: isEliminated ? 'line-through' : 'none' }}>
+                      {candidateOption?.name || candidateId}
+                    </Text>
+                    <Text variant="body-strong-m">
+                      {count} vote{count !== 1 ? 's' : ''}
+                    </Text>
+                  </Row>
+                );
+              })}
+            </Column>
+          </Column>
+        ))}
       </Column>
     </Column>
   );

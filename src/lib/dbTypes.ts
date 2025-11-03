@@ -9,7 +9,7 @@ export type Ballot = {
 
 export type BallotOption = {
     _id?: string;
-    optionId?: number;
+    optionId?: string;
     name?: string,
     description?: string,
     image?: string,
@@ -19,7 +19,13 @@ export type BallotOption = {
 export type VoteResponse = {
     _id?: string;
     ballotId?: string;
+    responseId?: string;
     name: string;
     choices: string[];
     timestamp: number;
+}
+
+export type ResponseQueryResult = {
+    ballot: Ballot | null;
+    responses: VoteResponse[];
 }

@@ -9,6 +9,7 @@ import {
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa6";
+import { IoCloseOutline } from "react-icons/io5";
 
 export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
@@ -16,6 +17,7 @@ export const iconLibrary: Record<string, IconType> = {
   linkedin: FaLinkedin,
   dotsVertical: HiOutlineDotsVertical,
   miniPlus: HiMiniPlusSmall,
+  trash: IoCloseOutline,
 };
 
 export type IconLibrary = typeof iconLibrary;

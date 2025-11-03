@@ -27,18 +27,24 @@ type BallotForm = {
 };
 
 type BallotOptionWithProps = BallotOption & {
+  error: boolean
+}
+
+type BallotSettings = {
   dropdownOpen?: boolean,
-  hasDecription?: boolean,
+  hasDescription?: boolean,
   hasImage?: boolean,
   hasUrl?: boolean,
-  error: boolean
 }
 
 export default function Create() {
   const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "", error: false });
   const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "", error: false } }));
+  const [ballotSettings, setBallotSettings] = useState<BallotSettings>({ dropdownOpen: false, hasDescription: false, hasImage: false, hasUrl: false });
   const nameRef = useRef<HTMLInputElement>(null);
-
+  const hasUnusedSettings = //!ballotSettings.hasDescription || 
+    !ballotSettings.hasImage
+    || !ballotSettings.hasUrl;
   const handleFormChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
     setBallotForm(prev => {
@@ -249,6 +255,7 @@ export default function Create() {
                   What are you voting on?
                 </Text>
               </Column>
+
               <Column fillWidth horizontal="start" gap="8">
                 {options?.map((option, index) => {
                   return (
@@ -269,56 +276,15 @@ export default function Create() {
                           </Text>
                         </Column>
                         <Column style={{ alignItems: "end" }} fillWidth>
-                          <DropdownWrapper
-                            isOpen={options[index].dropdownOpen}
-                            onOpenChange={(state) => {
-                              options[index].dropdownOpen = state;
-                              setOptions([...options]);
-                            }}
-                            placement="right"
-                            trigger={
-                              <IconButton icon="miniPlus" variant="secondary" size="s" style={{ height: "100%" }}
-                                onClick={() => {
-                                  options[index].dropdownOpen = !options[index].dropdownOpen;
-                                  setOptions([...options]);
-                                }}
-                              />
+                          <IconButton icon="trash" size="s" variant="secondary" disabled={options.length <= 2} onClick={() => {
+                            if (options.length <= 2) {
+                              return;
                             }
-                            dropdown={
-                              <Column fillWidth padding="4" gap="2">
-                                <Option
-                                  label="Description"
-                                  value="top"
-                                  onClick={() => {
-                                    options[index].dropdownOpen = false;
-                                    options[index].hasDecription = true;
-                                    setOptions([...options]);
-                                  }}
-                                />
-                                <Option
-                                  label="Image URL"
-                                  value="middle"
-                                  onClick={() => {
-                                    options[index].dropdownOpen = false;
-                                    options[index].hasImage = true;
-                                    setOptions([...options]);
-                                  }}
-                                />
-                                <Option
-                                  label="Link"
-                                  value="bottom"
-                                  onClick={() => {
-                                    options[index].dropdownOpen = false;
-                                    options[index].hasUrl = true;
-                                    setOptions([...options]);
-                                  }}
-                                />
-                              </Column>
-                            }
-                          />
+                            const newOptions = options.filter((_, i) => i !== index);
+                            setOptions([...newOptions]);
+                          }} />
                         </Column>
                       </Row>
-
                       {options[index].error && (
                         <Row vertical="center" gap="8" style={{ color: "red" }} marginBottom="xs">
                           <Icon name="danger" size="xs" />
@@ -332,28 +298,28 @@ export default function Create() {
                           label="Name"
                           value={option.name}
                           onChange={handleOptionChange}
-                          radius={(options[index].hasDecription
-                            || options[index].hasImage
-                            || options[index].hasUrl
+                          radius={(ballotSettings.hasDescription
+                            || ballotSettings.hasImage
+                            || ballotSettings.hasUrl
                           ) ? "top" : undefined}
                         />
                       </Row>
 
-                      {options[index].hasDecription && (
+                      {ballotSettings.hasDescription && (
                         <Row fillWidth>
-                          <Input
+                          <Textarea
                             id={`${index}.description`}
                             name={`${index}.description`}
                             label="Description"
                             value={option.description}
                             onChange={handleOptionChange}
-                            radius={(options[index].hasImage
-                              || options[index].hasUrl
+                            radius={(ballotSettings.hasImage
+                              || ballotSettings.hasUrl
                             ) ? "none" : "bottom"}
                           />
                         </Row>
                       )}
-                      {options[index].hasImage && (
+                      {ballotSettings.hasImage && (
                         <Row fillWidth>
                           <Input
                             id={`${index}.image`}
@@ -361,12 +327,12 @@ export default function Create() {
                             label="Image URL"
                             value={option.image}
                             onChange={handleOptionChange}
-                            radius={(options[index].hasUrl
+                            radius={(ballotSettings.hasUrl
                             ) ? "none" : "bottom"}
                           />
                         </Row>
                       )}
-                      {options[index].hasUrl && (
+                      {ballotSettings.hasUrl && (
                         <Row fillWidth>
                           <Input
                             id={`${index}.url`}
@@ -378,19 +344,67 @@ export default function Create() {
                           />
                         </Row>
                       )}
+
+                      {index === 0 && hasUnusedSettings && <Row center fillWidth marginTop="s">
+                        <DropdownWrapper
+                          isOpen={ballotSettings.dropdownOpen}
+                          onOpenChange={(state) => {
+                            ballotSettings.dropdownOpen = state;
+                            setOptions([...options]);
+                          }}
+                          placement="right"
+                          trigger={
+                            <Button prefixIcon="miniPlus" variant="secondary" size="s" style={{ height: "100%" }}
+                              onClick={() => {
+                                ballotSettings.dropdownOpen = !ballotSettings.dropdownOpen;
+                                setOptions([...options]);
+                              }}
+                            >Add field</Button>
+                          }
+                          dropdown={
+                            <Column fillWidth padding="4" gap="2">
+                              {/* {!ballotSettings.hasDescription &&
+                                <Option
+                                  label="Description"
+                                  value="top"
+                                  onClick={() => {
+                                    ballotSettings.dropdownOpen = false;
+                                    ballotSettings.hasDescription = true;
+                                    setOptions([...options]);
+                                  }}
+                                />} */}
+                              {!ballotSettings.hasImage &&
+                                <Option
+                                  label="Image URL"
+                                  value="middle"
+                                  onClick={() => {
+                                    ballotSettings.dropdownOpen = false;
+                                    ballotSettings.hasImage = true;
+                                    setOptions([...options]);
+                                  }}
+                                />}
+                              {!ballotSettings.hasUrl &&
+                                <Option
+                                  label="Link"
+                                  value="bottom"
+                                  onClick={() => {
+                                    ballotSettings.dropdownOpen = false;
+                                    ballotSettings.hasUrl = true;
+                                    setOptions([...options]);
+                                  }}
+                                />
+                              }
+                            </Column>
+                          }
+                        />
+                      </Row>
+                      }
                     </Column>
                   );
                 })}
 
                 <Row fillWidth center gap="l">
-                  <IconButton icon="minus" size="l" disabled={options.length < 4} onClick={() => {
-                    if (options.length < 4) {
-                      return;
-                    }
-                    const newOptions = options.slice(0, options.length - 1);
-                    setOptions([...newOptions]);
-                  }} />
-                  <IconButton icon="plus" size="l" onClick={() => {
+                  <IconButton icon="plus" variant="secondary" size="l" onClick={() => {
                     options.push({ name: "", description: "", image: "", url: "", error: false });
                     setOptions([...options]);
                   }} />

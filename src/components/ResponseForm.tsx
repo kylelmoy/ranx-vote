@@ -26,7 +26,7 @@ export const ResponseForm: React.FC<BallotListProps> = ({ initialOptions, ballot
 	};
 
 	const handleSubmit = async () => {
-		const vote: number[] = [];
+		const vote: string[] = [];
 		if (!ballotOptions) {
 			return;
 		}
@@ -70,7 +70,7 @@ export const ResponseForm: React.FC<BallotListProps> = ({ initialOptions, ballot
 			</DragDropContext>
 
 			<Column maxWidth="s" gap="16" horizontal="center" align="center">
-				<Input id="name" label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+				<Input id="name" label="Your Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
 				<Button
 					id="about"
 					variant="primary"
@@ -117,11 +117,11 @@ const BallotListItem: React.FC<BallotListItemProps> = ({ option, isDragging }) =
 							{option.name}
 						</ShineFx>
 					) : option.name}
-					{option.description &&
+					{/* {option.description &&
 						<Text variant="label-default-s">
 							{option.description}
 						</Text>
-					}
+					} */}
 				</Column>
 				{option.url &&
 					<IconButton icon="chevronRight" radius="right" style={{ height: "100%", minWidth: "50px" }} variant="secondary" href={option.url} />
