@@ -141,12 +141,12 @@ export default function ResultsPage({ ballotId }: BallotProps) {
           />
         </HoloFx>
         <Column>
-          <Heading variant="heading-strong-m">
-            {ballot.name}
-          </Heading>
-          <Text variant="body-default-m">
-            {ballot.description}
-          </Text>
+
+          <Row center fillWidth>
+            <Text variant="label-default-m">
+              Winner (so far)
+            </Text>
+          </Row>
           <Row center fillWidth>
             {winner?.image &&
               <Media
@@ -167,11 +167,6 @@ export default function ResultsPage({ ballotId }: BallotProps) {
             </Text>
           </Row>
 
-          <Row center fillWidth>
-            <Text variant="label-default-m">
-              Winner (so far)
-            </Text>
-          </Row>
         </Column>
       </Column>
       }
