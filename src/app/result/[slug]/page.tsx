@@ -6,6 +6,32 @@ import {
   RevealFx,
   Button,
 } from "@once-ui-system/core";
+import type { Metadata } from "next";
+import { getBallot } from "@/lib/dbAccess";
+
+// set dynamic metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string | string[] }>;
+}): Promise<Metadata> {
+
+  const routeParams = await params;
+  const slugPath = Array.isArray(routeParams.slug)
+    ? routeParams.slug.join("/")
+    : routeParams.slug || "";
+  const ballot = await getBallot(slugPath);
+  if (!ballot) {
+    return {
+      title: "ranx-vote | ballot not found",
+      description: "The requested ballot could not be found.",
+    };
+  }
+  return {
+    title: `ranx-vote | results | ${ballot.name}`,
+    description: ballot.description,
+  };
+}
 
 export default async function Result({
   params,
