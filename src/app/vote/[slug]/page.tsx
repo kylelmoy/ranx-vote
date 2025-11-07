@@ -2,7 +2,6 @@ import {
   Heading,
   Column,
   Row,
-  RevealFx,
   Button,
 } from "@once-ui-system/core";
 import ResponsePage from "../../../components/ResponsePage";
@@ -27,7 +26,6 @@ export default async function Vote({
 
         </Row>
         <Row maxWidth={24} style={{ justifyContent: "space-between" }} paddingY="m">
-
           <Button prefixIcon="chevronLeft" variant="secondary" size="s" href="/">
             home
           </Button>

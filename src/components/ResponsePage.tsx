@@ -95,12 +95,17 @@ export default function ResponsePage({ ballotId }: BallotProps) {
           }}
         />
       </HoloFx>
-      <Column marginBottom="l" padding="m">
+      <Column marginBottom="s" padding="m">
         <Heading variant="heading-strong-m">
           {ballot?.name}
         </Heading>
         <Text>
           {ballot.description}
+        </Text>
+        <Line />
+        <Text variant="label-default-s" color="neutral-alpha-weak" marginTop="s">
+          Drag to rank the options. <br />
+          The top option is your most preferred choice.
         </Text>
       </Column>
       <ResponseForm ballotId={ballot.ballotId || ""} initialOptions={ballot.options} />
