@@ -48,7 +48,7 @@ const style = {
   surface: "filled",
   transition: "all",
   scaling: "100", // 90 | 95 | 100 | 105 | 110
-}
+};
 const dataStyle = {
   variant: "gradient", // flat | gradient | outline
   mode: "categorical", // categorical | divergent | sequential
@@ -59,7 +59,7 @@ const dataStyle = {
   tick: {
     fill: "var(--neutral-on-background-weak)",
     fontSize: 11,
-    line: false
+    line: false,
   },
 };
 
@@ -109,8 +109,7 @@ const meta = {
   home: {
     path: "/",
     title: "ranx-vote by kyle moy",
-    description:
-      "A simple ranked-choice voting platform.",
+    description: "A simple ranked-choice voting platform.",
     image: "/images/og/home.jpg",
     canonical: "https://ranx-vote.kylelmoy.com",
     robots: "index,follow",
@@ -119,8 +118,7 @@ const meta = {
   vote: {
     path: "/",
     title: "ranx-vote by kyle moy",
-    description:
-      "A simple ranked-choice voting platform.",
+    description: "A simple ranked-choice voting platform.",
     image: "/images/og/home.jpg",
     canonical: "https://ranx-vote.kylelmoy.com",
     robots: "index,follow",

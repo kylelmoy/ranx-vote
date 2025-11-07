@@ -28,7 +28,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 interface BallotProps {
   ballotId?: string;
-};
+}
 
 export default function ResponsePage({ ballotId }: BallotProps) {
   const [ballot, setBallot] = useState<Ballot | null>(null);
@@ -62,7 +62,18 @@ export default function ResponsePage({ ballotId }: BallotProps) {
       border="neutral-alpha-weak"
       style={{ textAlign: "left" }}
     >
-      <Particle opacity={70} position="absolute" top="0" left="0" fill interactive speed={4} size="2" density={50} pointerEvents="none" />
+      <Particle
+        opacity={70}
+        position="absolute"
+        top="0"
+        left="0"
+        fill
+        interactive
+        speed={4}
+        size="2"
+        density={50}
+        pointerEvents="none"
+      />
       <HoloFx
         fill
         top="0"
@@ -70,7 +81,8 @@ export default function ResponsePage({ ballotId }: BallotProps) {
         position="absolute"
         texture={{
           opacity: 0,
-        }}>
+        }}
+      >
         <Background
           position="absolute"
           top="0"
@@ -95,12 +107,13 @@ export default function ResponsePage({ ballotId }: BallotProps) {
           }}
         />
       </HoloFx>
-      <Column marginBottom="l" padding="m">
-        <Heading variant="heading-strong-m">
-          {ballot?.name}
-        </Heading>
-        <Text>
-          {ballot.description}
+      <Column marginBottom="s" padding="m">
+        <Heading variant="heading-strong-m">{ballot?.name}</Heading>
+        <Text>{ballot.description}</Text>
+        <Line />
+        <Text variant="label-default-s" color="neutral-alpha-weak" marginTop="s">
+          Drag to rank the options. <br />
+          The top option is your most preferred choice.
         </Text>
       </Column>
       <ResponseForm ballotId={ballot.ballotId || ""} initialOptions={ballot.options} />

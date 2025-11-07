@@ -1,15 +1,11 @@
 import { IconType } from "react-icons";
 
-import {
-  HiOutlineRocketLaunch,
-  HiMiniPlusSmall
-} from "react-icons/hi2";
+import { HiOutlineRocketLaunch, HiMiniPlusSmall } from "react-icons/hi2";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import {
-  FaGithub,
-  FaLinkedin,
-} from "react-icons/fa6";
-import { IoCloseOutline } from "react-icons/io5";
+import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { IoCloseOutline, IoPerson } from "react-icons/io5";
+import { IoIosSearch, IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { FaRegCopy } from "react-icons/fa";
 
 export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
@@ -18,6 +14,10 @@ export const iconLibrary: Record<string, IconType> = {
   dotsVertical: HiOutlineDotsVertical,
   miniPlus: HiMiniPlusSmall,
   trash: IoCloseOutline,
+  search: IoIosSearch,
+  check: IoIosCheckmarkCircleOutline,
+  person: IoPerson,
+  copy: FaRegCopy,
 };
 
 export type IconLibrary = typeof iconLibrary;
