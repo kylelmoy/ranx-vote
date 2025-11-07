@@ -11,8 +11,6 @@ export interface InstantRunoffResult {
     }>;
 }
 export function instantRunoff(votes: VoteResponse[]): InstantRunoffResult | null {
-
-    console.log("Votes:", votes);
     let winner: string | null = null;
     let tie: string[] | null = null;
     const rounds: Array<{
@@ -25,20 +23,17 @@ export function instantRunoff(votes: VoteResponse[]): InstantRunoffResult | null
     for (const vote of votes) {
         for (const candidate of vote.choices) remainingCandidates.add(candidate);
     }
-    console.log("Initial candidates:", Array.from(remainingCandidates));
 
     // if no candidates, no winner
     const candidateCount = remainingCandidates.size;
 
     if (candidateCount === 0) {
-        console.error("No candidates found");
         return null;
     }
     let roundNumber = 0;
     while (true) {
         roundNumber++;
         if (roundNumber > candidateCount) {
-            console.error("Instant runoff exceeded maximum rounds");
             return null;
         }
 
@@ -64,7 +59,6 @@ export function instantRunoff(votes: VoteResponse[]): InstantRunoffResult | null
         }
 
         if (activeBallots === 0) {
-            console.log("No active ballots remaining, ending");
             break;
         }
 
@@ -104,8 +98,6 @@ export function instantRunoff(votes: VoteResponse[]): InstantRunoffResult | null
             remainingCandidates.delete(c);
         }
         rounds.push({ voters, eliminated: lowest });
-
-        console.log(`Eliminated candidates: ${lowest.join(", ")}`);
     }
     return { winner, tie, rounds };
 }

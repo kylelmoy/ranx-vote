@@ -47,11 +47,10 @@ export default function ResultsPage({ ballotId }: BallotProps) {
       setData(data);
       setLoading(false);
       document.title = `ranx-vote | results | ${data.ballot?.name || ""}`;
-
-      const results = instantRunoff(data.responses);
-      setResults(results);
-      console.log("Data:", data);
-      console.log("Results:", results);
+      if (data.responses.length > 0) {
+        const results = instantRunoff(data.responses);
+        setResults(results);
+      }
     });
   }, [ballotId]);
 
