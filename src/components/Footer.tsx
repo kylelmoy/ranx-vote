@@ -23,7 +23,6 @@ export const Footer = () => {
 					<Text paddingX="4">Kyle Moy</Text>
 				</Text>
 				<Row gap="16">
-					<Badge title="kylelmoy / ranx-vote" icon="github" href="https://github.com/kylelmoy/ranx-vote" paddingX="12" paddingY="8" />
 					<IconButton
 						key="GitHub"
 						href="https://github.com/kylelmoy/ranx-vote"
@@ -37,6 +36,14 @@ export const Footer = () => {
 						href="https://www.linkedin.com/in/kylelmoy/"
 						icon="linkedin"
 						tooltip="Kyle Moy on LinkedIn"
+						size="s"
+						variant="ghost"
+					/>
+					<IconButton
+						key="Bio"
+						href="https://www.kylelmoy.com"
+						icon="person"
+						tooltip="Kyle Moy's Bio"
 						size="s"
 						variant="ghost"
 					/>
