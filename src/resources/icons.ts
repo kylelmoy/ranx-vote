@@ -11,6 +11,8 @@ import {
 } from "react-icons/fa6";
 import { IoCloseOutline, IoPerson } from "react-icons/io5";
 import { IoIosSearch, IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { FaRegCopy } from "react-icons/fa";
+
 export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
   github: FaGithub,
@@ -21,6 +23,7 @@ export const iconLibrary: Record<string, IconType> = {
   search: IoIosSearch,
   check: IoIosCheckmarkCircleOutline,
   person: IoPerson,
+  copy: FaRegCopy,
 };
 
 export type IconLibrary = typeof iconLibrary;

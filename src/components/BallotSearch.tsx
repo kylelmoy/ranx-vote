@@ -2,16 +2,10 @@
 
 import { getBallot } from "@/lib/dbAccess";
 import {
-  Heading,
   Text,
   Column,
-  TypeFx,
-  Button,
-  ShineFx,
-  RevealFx,
   Input,
   Icon,
-  Row,
   Spinner,
 } from "@once-ui-system/core";
 import { useRouter } from "next/navigation";

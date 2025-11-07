@@ -32,7 +32,7 @@ export async function createBallot(ballot: Ballot) {
 		timestamp: Date.now()
 	});
 
-	redirect(`/vote/${ballotId}`);
+	redirect(`/share/${ballotId}`);
 	return result?.acknowledged;
 }
 
