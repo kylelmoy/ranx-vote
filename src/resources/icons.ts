@@ -10,8 +10,7 @@ import {
   FaLinkedin,
 } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
-import { IoIosSearch } from "react-icons/io";
-
+import { IoIosSearch, IoIosCheckmarkCircleOutline } from "react-icons/io";
 export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
   github: FaGithub,
@@ -19,7 +18,8 @@ export const iconLibrary: Record<string, IconType> = {
   dotsVertical: HiOutlineDotsVertical,
   miniPlus: HiMiniPlusSmall,
   trash: IoCloseOutline,
-  search: IoIosSearch
+  search: IoIosSearch,
+  check: IoIosCheckmarkCircleOutline,
 };
 
 export type IconLibrary = typeof iconLibrary;

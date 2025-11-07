@@ -245,7 +245,7 @@ export default function ResultsPage({ ballotId }: BallotProps) {
               Round {index + 1}
             </Heading>
             <Column gap="s" fillWidth>
-              {Array.from(round.voters.entries()).map(([candidateId, voters]) => {
+              {Array.from(round.voters.entries()).map(([candidateId, voters], roundIndex) => {
                 const candidateOption = ballot.options.find((o) => o.optionId === candidateId);
                 const isEliminated = round.eliminated.includes(candidateId);
                 return (
@@ -284,8 +284,8 @@ export default function ResultsPage({ ballotId }: BallotProps) {
                         border="neutral-alpha-weak"
                       >
                         <Row gap="8" wrap>
-                          {voters.map((voterName) => (
-                            <Tag key={voterName}>{voterName}</Tag>
+                          {voters.map((voterName, voterIndex) => (
+                            <Tag key={voterName + roundIndex + voterIndex}>{voterName}</Tag>
                           ))}
                         </Row>
                       </Column>

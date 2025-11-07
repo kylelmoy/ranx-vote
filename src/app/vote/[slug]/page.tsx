@@ -18,15 +18,22 @@ export default async function Vote({
     : routeParams.slug || "";
   return (
     <Column fillWidth padding="l">
-      <Column fillWidth horizontal="center" gap="l" align="center" paddingBottom="l">
+      <Column fillWidth horizontal="center" align="center" paddingBottom="l">
 
         <Row maxWidth={24} horizontal="center">
           <Heading variant="display-strong-xl" marginTop="24">
             vote
           </Heading>
 
-          <Button prefixIcon="chevronLeft" variant="secondary" size="s" style={{ position: "absolute", left: 0, bottom: 0 }} href="/">
+        </Row>
+        <Row maxWidth={24} style={{ justifyContent: "space-between" }} paddingY="m">
+
+          <Button prefixIcon="chevronLeft" variant="secondary" size="s" href="/">
             home
+          </Button>
+
+          <Button suffixIcon="chevronRight" variant="secondary" size="s" href={`/result/${slugPath}`}>
+            results
           </Button>
         </Row>
         <Row maxWidth={24}>

@@ -48,7 +48,7 @@ export default function Home() {
       <RevealFx delay={0.8} translateY={1} center>
         <Column maxWidth="s" horizontal="center" gap="l" align="center">
           <Button variant="secondary" size="m" href="./create" suffixIcon="chevronRight">
-            <ShineFx speed={5}>Create a ballot</ShineFx>
+            <ShineFx speed={5}>create a ballot</ShineFx>
           </Button>
         </Column>
       </RevealFx>
