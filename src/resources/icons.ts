@@ -9,7 +9,7 @@ import {
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa6";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoPerson } from "react-icons/io5";
 import { IoIosSearch, IoIosCheckmarkCircleOutline } from "react-icons/io";
 export const iconLibrary: Record<string, IconType> = {
   rocket: HiOutlineRocketLaunch,
@@ -20,6 +20,7 @@ export const iconLibrary: Record<string, IconType> = {
   trash: IoCloseOutline,
   search: IoIosSearch,
   check: IoIosCheckmarkCircleOutline,
+  person: IoPerson,
 };
 
 export type IconLibrary = typeof iconLibrary;

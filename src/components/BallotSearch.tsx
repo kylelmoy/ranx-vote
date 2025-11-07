@@ -67,19 +67,20 @@ export const BallotSearch = () => {
     <Column fillWidth maxWidth={14}>
       <Input
         id="ballot-code"
-        label="Find a ballot by ID"
+        label="enter a ballot code"
+        size={4}
         maxLength={4}
         hasPrefix={<Icon marginLeft="4" onBackground="neutral-weak" name="search" size="xs" />}
         hasSuffix={done ? <Icon onBackground="neutral-weak" name="check" size="m" /> : loading ? <Spinner size="m" /> : undefined}
         value={ballotCode}
         onChange={onCodeChanged}
         error={isInvalid}
-        errorMessage={isInvalid && !loading ? <Column fillWidth center>{`Hmm, ballot ${ballotCode} doesn't exist. Try again?`}</Column> : undefined}
+        errorMessage={isInvalid && !loading ? <Column fillWidth center>{`hmm, ballot ${ballotCode} doesn't exist. try again?`}</Column> : undefined}
       />
       {
         loading && (
           <Text variant="label-default-s" onBackground="neutral-weak" marginTop="s">
-            Hang tight, looking up ballot...
+            hang tight, looking up ballot...
           </Text>)
       }
     </Column>

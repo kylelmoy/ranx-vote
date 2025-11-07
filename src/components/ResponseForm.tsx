@@ -82,7 +82,7 @@ export const ResponseForm: React.FC<BallotListProps> = ({ initialOptions, ballot
 					onClick={handleSubmit}
 				>
 					<Row gap="8" vertical="center" paddingRight="4">
-						Submit
+						submit my vote
 					</Row>
 				</Button>
 			</Column>
@@ -111,7 +111,7 @@ const BallotListItem: React.FC<BallotListItemProps> = ({ option, isDragging }) =
 						/>
 					</Column>
 				}
-				<Column fillWidth paddingLeft="m" style={{ justifyContent: "center" }}>
+				<Column fillWidth paddingLeft="m" paddingY="s" style={{ justifyContent: "center" }}>
 					{isDragging ? (
 						<ShineFx>
 							{option.name}

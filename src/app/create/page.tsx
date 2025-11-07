@@ -418,7 +418,7 @@ export default function Create() {
             </Row>
             <Row maxWidth={24}>
               <Button id="submit-button" variant="primary" fillWidth arrowIcon onClick={handleSubmit}>
-                <ShineFx baseOpacity={0.6}>Create this ballot</ShineFx>
+                <ShineFx baseOpacity={0.6}>create this ballot</ShineFx>
               </Button>
             </Row>
           </Column>
