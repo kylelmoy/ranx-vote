@@ -21,41 +21,55 @@ import {
 import { useCallback, useRef, useState } from "react";
 
 type BallotForm = {
-  name: string,
+  name: string;
   description: string;
-  error: boolean,
+  error: boolean;
 };
 
 type BallotOptionWithProps = BallotOption & {
-  error: boolean
-}
+  error: boolean;
+};
 
 type BallotSettings = {
-  dropdownOpen?: boolean,
-  hasDescription?: boolean,
-  hasImage?: boolean,
-  hasUrl?: boolean,
-}
+  dropdownOpen?: boolean;
+  hasDescription?: boolean;
+  hasImage?: boolean;
+  hasUrl?: boolean;
+};
 
 export default function Create() {
-  const [ballotForm, setBallotForm] = useState<BallotForm>({ name: "", description: "", error: false });
-  const [options, setOptions] = useState<BallotOptionWithProps[]>(Array.from({ length: 3 }, () => { return { name: "", description: "", image: "", url: "", error: false } }));
-  const [ballotSettings, setBallotSettings] = useState<BallotSettings>({ dropdownOpen: false, hasDescription: false, hasImage: false, hasUrl: false });
+  const [ballotForm, setBallotForm] = useState<BallotForm>({
+    name: "",
+    description: "",
+    error: false,
+  });
+  const [options, setOptions] = useState<BallotOptionWithProps[]>(
+    Array.from({ length: 3 }, () => {
+      return { name: "", description: "", image: "", url: "", error: false };
+    }),
+  );
+  const [ballotSettings, setBallotSettings] = useState<BallotSettings>({
+    dropdownOpen: false,
+    hasDescription: false,
+    hasImage: false,
+    hasUrl: false,
+  });
   const nameRef = useRef<HTMLInputElement>(null);
-  const hasUnusedSettings = //!ballotSettings.hasDescription || 
-    !ballotSettings.hasImage
-    || !ballotSettings.hasUrl;
-  const handleFormChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.currentTarget;
-    setBallotForm(prev => {
-      const newFormValues = {
-        ...prev,
-        [name]: value
-      }
-      newFormValues.error = !newFormValues.name;
-      return newFormValues;
-    });
-  }, []);
+  const hasUnusedSettings = !ballotSettings.hasImage || !ballotSettings.hasUrl; //!ballotSettings.hasDescription ||
+  const handleFormChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = event.currentTarget;
+      setBallotForm((prev) => {
+        const newFormValues = {
+          ...prev,
+          [name]: value,
+        };
+        newFormValues.error = !newFormValues.name;
+        return newFormValues;
+      });
+    },
+    [],
+  );
 
   const handleOptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -64,7 +78,7 @@ export default function Create() {
       const index = Number(idxStr);
       const key = keyStr as keyof BallotOption;
 
-      setOptions(prev => {
+      setOptions((prev) => {
         const next = [...prev] as BallotOptionWithProps[];
         const option = { ...next[index] };
         option[key] = value;
@@ -73,7 +87,7 @@ export default function Create() {
         return next;
       });
     },
-    []
+    [],
   );
   const handleSubmit = useCallback(async () => {
     if (!validate()) {
@@ -82,29 +96,31 @@ export default function Create() {
 
     const ballot: Ballot = {
       ...ballotForm,
-      options: options.filter((option) => option.name).map((option) => {
-        return {
-          name: option.name,
-          description: option.description,
-          image: option.image,
-          url: option.url,
-        };
-      }),
+      options: options
+        .filter((option) => option.name)
+        .map((option) => {
+          return {
+            name: option.name,
+            description: option.description,
+            image: option.image,
+            url: option.url,
+          };
+        }),
     };
     createBallot(ballot);
   }, [ballotForm, options]);
 
   const validate = () => {
     if (!ballotForm.name) {
-      setBallotForm(prev => {
+      setBallotForm((prev) => {
         return {
           ...prev,
-          error: true
-        }
+          error: true,
+        };
       });
       nameRef.current?.focus();
       return false;
-    };
+    }
 
     let hasError = false;
     for (let i = 0; i < options.length; i++) {
@@ -122,7 +138,6 @@ export default function Create() {
     <Column fillWidth padding="l">
       <RevealFx horizontal="center">
         <Column fillWidth horizontal="center" align="center" paddingBottom="l">
-
           <Row maxWidth={24} horizontal="center">
             <Heading variant="display-strong-xl" marginTop="24">
               create
@@ -178,7 +193,12 @@ export default function Create() {
                   <Heading marginBottom="s" variant="display-strong-xs">
                     Ballot
                   </Heading>
-                  <Text wrap="balance" marginBottom="l" variant="body-default-l" onBackground="neutral-weak">
+                  <Text
+                    wrap="balance"
+                    marginBottom="l"
+                    variant="body-default-l"
+                    onBackground="neutral-weak"
+                  >
                     Tell us about your ballot
                   </Text>
                 </Column>
@@ -191,11 +211,14 @@ export default function Create() {
                       ref={nameRef}
                       value={ballotForm.name}
                       onChange={handleFormChange}
-                      errorMessage={ballotForm.error ? (
-                        <Row vertical="center" gap="8">
-                          <Icon name="danger" size="xs" />
-                          Please enter a name for your ballot.
-                        </Row>) : undefined}
+                      errorMessage={
+                        ballotForm.error ? (
+                          <Row vertical="center" gap="8">
+                            <Icon name="danger" size="xs" />
+                            Please enter a name for your ballot.
+                          </Row>
+                        ) : undefined
+                      }
                     />
                   </Row>
 
@@ -212,7 +235,7 @@ export default function Create() {
                 </Column>
               </Column>
             </Row>
-            <Row maxWidth={24} >
+            <Row maxWidth={24}>
               <Column
                 overflow="hidden"
                 fillWidth
@@ -255,7 +278,12 @@ export default function Create() {
                   <Heading marginBottom="s" variant="display-strong-xs">
                     Options
                   </Heading>
-                  <Text wrap="balance" marginBottom="l" variant="body-default-l" onBackground="neutral-weak">
+                  <Text
+                    wrap="balance"
+                    marginBottom="l"
+                    variant="body-default-l"
+                    onBackground="neutral-weak"
+                  >
                     What are you voting on?
                   </Text>
                 </Column>
@@ -263,7 +291,8 @@ export default function Create() {
                 <Column fillWidth horizontal="start" gap="8">
                   {options?.map((option, index) => {
                     return (
-                      <Column key={index}
+                      <Column
+                        key={index}
                         fillWidth
                         padding="s"
                         radius="l"
@@ -280,21 +309,27 @@ export default function Create() {
                             </Text>
                           </Column>
                           <Column style={{ alignItems: "end" }} fillWidth>
-                            <IconButton icon="trash" size="s" variant="secondary" disabled={options.length <= 2} onClick={() => {
-                              if (options.length <= 2) {
-                                return;
-                              }
-                              const newOptions = options.filter((_, i) => i !== index);
-                              setOptions([...newOptions]);
-                            }} />
+                            <IconButton
+                              icon="trash"
+                              size="s"
+                              variant="secondary"
+                              disabled={options.length <= 2}
+                              onClick={() => {
+                                if (options.length <= 2) {
+                                  return;
+                                }
+                                const newOptions = options.filter((_, i) => i !== index);
+                                setOptions([...newOptions]);
+                              }}
+                            />
                           </Column>
                         </Row>
                         {options[index].error && (
                           <Row vertical="center" gap="8" style={{ color: "red" }} marginBottom="xs">
                             <Icon name="danger" size="xs" />
                             Please enter a name for this option.
-                          </Row>)
-                        }
+                          </Row>
+                        )}
                         <Row fillWidth style={{ alignItems: "center" }}>
                           <Input
                             id={`${index}.name`}
@@ -302,10 +337,13 @@ export default function Create() {
                             label="Name"
                             value={option.name}
                             onChange={handleOptionChange}
-                            radius={(ballotSettings.hasDescription
-                              || ballotSettings.hasImage
-                              || ballotSettings.hasUrl
-                            ) ? "top" : undefined}
+                            radius={
+                              ballotSettings.hasDescription ||
+                              ballotSettings.hasImage ||
+                              ballotSettings.hasUrl
+                                ? "top"
+                                : undefined
+                            }
                           />
                         </Row>
 
@@ -317,9 +355,9 @@ export default function Create() {
                               label="Description"
                               value={option.description}
                               onChange={handleOptionChange}
-                              radius={(ballotSettings.hasImage
-                                || ballotSettings.hasUrl
-                              ) ? "none" : "bottom"}
+                              radius={
+                                ballotSettings.hasImage || ballotSettings.hasUrl ? "none" : "bottom"
+                              }
                             />
                           </Row>
                         )}
@@ -331,8 +369,7 @@ export default function Create() {
                               label="Image URL"
                               value={option.image}
                               onChange={handleOptionChange}
-                              radius={(ballotSettings.hasUrl
-                              ) ? "none" : "bottom"}
+                              radius={ballotSettings.hasUrl ? "none" : "bottom"}
                             />
                           </Row>
                         )}
@@ -349,25 +386,32 @@ export default function Create() {
                           </Row>
                         )}
 
-                        {index === 0 && hasUnusedSettings && <Row center fillWidth marginTop="s">
-                          <DropdownWrapper
-                            isOpen={ballotSettings.dropdownOpen}
-                            onOpenChange={(state) => {
-                              ballotSettings.dropdownOpen = state;
-                              setOptions([...options]);
-                            }}
-                            placement="right"
-                            trigger={
-                              <Button prefixIcon="miniPlus" variant="secondary" size="s" style={{ height: "100%" }}
-                                onClick={() => {
-                                  ballotSettings.dropdownOpen = !ballotSettings.dropdownOpen;
-                                  setOptions([...options]);
-                                }}
-                              >Add field</Button>
-                            }
-                            dropdown={
-                              <Column fillWidth padding="4" gap="2">
-                                {/* {!ballotSettings.hasDescription &&
+                        {index === 0 && hasUnusedSettings && (
+                          <Row center fillWidth marginTop="s">
+                            <DropdownWrapper
+                              isOpen={ballotSettings.dropdownOpen}
+                              onOpenChange={(state) => {
+                                ballotSettings.dropdownOpen = state;
+                                setOptions([...options]);
+                              }}
+                              placement="right"
+                              trigger={
+                                <Button
+                                  prefixIcon="miniPlus"
+                                  variant="secondary"
+                                  size="s"
+                                  style={{ height: "100%" }}
+                                  onClick={() => {
+                                    ballotSettings.dropdownOpen = !ballotSettings.dropdownOpen;
+                                    setOptions([...options]);
+                                  }}
+                                >
+                                  Add field
+                                </Button>
+                              }
+                              dropdown={
+                                <Column fillWidth padding="4" gap="2">
+                                  {/* {!ballotSettings.hasDescription &&
                                 <Option
                                   label="Description"
                                   value="top"
@@ -377,47 +421,65 @@ export default function Create() {
                                     setOptions([...options]);
                                   }}
                                 />} */}
-                                {!ballotSettings.hasImage &&
-                                  <Option
-                                    label="Image URL"
-                                    value="middle"
-                                    onClick={() => {
-                                      ballotSettings.dropdownOpen = false;
-                                      ballotSettings.hasImage = true;
-                                      setOptions([...options]);
-                                    }}
-                                  />}
-                                {!ballotSettings.hasUrl &&
-                                  <Option
-                                    label="Link"
-                                    value="bottom"
-                                    onClick={() => {
-                                      ballotSettings.dropdownOpen = false;
-                                      ballotSettings.hasUrl = true;
-                                      setOptions([...options]);
-                                    }}
-                                  />
-                                }
-                              </Column>
-                            }
-                          />
-                        </Row>
-                        }
+                                  {!ballotSettings.hasImage && (
+                                    <Option
+                                      label="Image URL"
+                                      value="middle"
+                                      onClick={() => {
+                                        ballotSettings.dropdownOpen = false;
+                                        ballotSettings.hasImage = true;
+                                        setOptions([...options]);
+                                      }}
+                                    />
+                                  )}
+                                  {!ballotSettings.hasUrl && (
+                                    <Option
+                                      label="Link"
+                                      value="bottom"
+                                      onClick={() => {
+                                        ballotSettings.dropdownOpen = false;
+                                        ballotSettings.hasUrl = true;
+                                        setOptions([...options]);
+                                      }}
+                                    />
+                                  )}
+                                </Column>
+                              }
+                            />
+                          </Row>
+                        )}
                       </Column>
                     );
                   })}
 
                   <Row fillWidth center gap="l">
-                    <IconButton icon="plus" variant="secondary" size="l" onClick={() => {
-                      options.push({ name: "", description: "", image: "", url: "", error: false });
-                      setOptions([...options]);
-                    }} />
+                    <IconButton
+                      icon="plus"
+                      variant="secondary"
+                      size="l"
+                      onClick={() => {
+                        options.push({
+                          name: "",
+                          description: "",
+                          image: "",
+                          url: "",
+                          error: false,
+                        });
+                        setOptions([...options]);
+                      }}
+                    />
                   </Row>
                 </Column>
               </Column>
             </Row>
             <Row maxWidth={24}>
-              <Button id="submit-button" variant="primary" fillWidth arrowIcon onClick={handleSubmit}>
+              <Button
+                id="submit-button"
+                variant="primary"
+                fillWidth
+                arrowIcon
+                onClick={handleSubmit}
+              >
                 <ShineFx baseOpacity={0.6}>create this ballot</ShineFx>
               </Button>
             </Row>

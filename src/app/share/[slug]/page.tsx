@@ -1,12 +1,5 @@
 import { CopyField } from "@/components/CopyField";
-import {
-  Heading,
-  Column,
-  Row,
-  Button,
-  Text,
-  RevealFx,
-} from "@once-ui-system/core";
+import { Heading, Column, Row, Button, Text, RevealFx } from "@once-ui-system/core";
 
 export default async function Share({
   params,
@@ -20,16 +13,13 @@ export default async function Share({
   return (
     <Column fillWidth fillHeight padding="l">
       <Column fillWidth horizontal="center" align="center" paddingBottom="l">
-
         <Row maxWidth={24} horizontal="center">
           <Heading variant="display-strong-xl" marginTop="24">
             share
           </Heading>
-
         </Row>
 
         <Row maxWidth={24} style={{ justifyContent: "space-between" }} paddingY="m">
-
           <Button prefixIcon="chevronLeft" variant="secondary" size="s" href="/">
             home
           </Button>
